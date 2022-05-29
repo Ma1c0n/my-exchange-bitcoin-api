@@ -5,7 +5,6 @@ import com.maiconsantos.dio.projeto.myexchangebitcoinapi.repository.WalletReposi
 import com.maiconsantos.dio.projeto.myexchangebitcoinapi.service.api.BitcoinInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Optional;
 
 @RestController
@@ -23,7 +22,7 @@ public class ExchangeController {
     @Autowired
     private WalletRepository walletRepository;
 
-    @GetMapping("/bitcoin/price")
+    @GetMapping("/bitcoin-price")
     public String bitcoinPrice() {
         String price = bitcoinInfo.info().getTicker().getLast();
         return price;
@@ -37,12 +36,12 @@ public class ExchangeController {
         walletRepository.save(wallet);
     }
 
-    @GetMapping("/waller/balance/money")
+    @GetMapping("/waller/balance-money")
     public Double balanceMoney() {
         return getWaller().getMoneyBalance();
     }
 
-    @GetMapping("/waller/balance/bitcoin")
+    @GetMapping("/waller/balance-bitcoin")
     public Double balanceBitcoin() {
         return getWaller().getMoneyBitcoin();
     }
@@ -57,17 +56,17 @@ public class ExchangeController {
         walletRepository.deleteAll();
     }
 
-    @PostMapping("/money/to/bitcoin")
+    @PostMapping("/wallet/money-to-bitcoin")
     public void moneyToBitcoin() {
         Wallet wallet = getWaller();
         Double balanceMoney = wallet.getMoneyBalance();
         Double bitcoinPrice = Double.valueOf(bitcoinInfo.info().getTicker().getLast());
         wallet.setMoneyBalance(0.0);
-        wallet.setMoneyBitcoin(balanceMoney/bitcoinPrice);
+        wallet.setMoneyBitcoin(balanceMoney / bitcoinPrice);
         walletRepository.save(wallet);
     }
 
-    @PostMapping("/bitcoin/to/money")
+    @PostMapping("wallet/bitcoin-to-money")
     public void bitcoinToMoney() {
         Wallet wallet = getWaller();
         Double balanceBitcoin = wallet.getMoneyBitcoin();
